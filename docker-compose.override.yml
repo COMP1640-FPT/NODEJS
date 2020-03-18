@@ -1,0 +1,34 @@
+# development
+version: '3'
+services: 
+  db:
+    container_name: mongo_local
+    volumes: 
+      - db-local:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootPassword
+  mongo-express:
+    container_name: mongo-express-local
+    ports: 
+      - "8888:8081"
+    environment: 
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootPassword
+      ME_CONFIG_BASICAUTH_USERNAME: namthit98
+      ME_CONFIG_BASICAUTH_PASSWORD: dev@123
+  web:
+    container_name: node-app-local
+    volumes: 
+      - ./src:/app/src
+      - /app/node_modules
+    ports: 
+      - 8001:8001
+    environment: 
+      NODE_ENV: 'development'
+      PORT: 8001
+      SECRET_EXPIRES: "1h"
+      SECRET: "namehandsome130498"
+      DB_URI: "mongodb://db:27017/COMP1640"
+volumes:
+  db-local:

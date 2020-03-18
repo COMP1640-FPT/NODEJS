@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: mongo
+    networks: 
+      - www-net
+  mongo-express:
+    image: mongo-express
+    depends_on:
+      - db
+    environment: 
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
+    networks: 
+      - www-net
+  web:
+    build:
+      context: .
+    depends_on: 
+      - db
+    networks: 
+      - www-net
+networks: 
+  www-net:
+    driver: bridge

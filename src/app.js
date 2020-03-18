@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/COMP1640', {
+mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true
 });
 
