@@ -29,6 +29,6 @@ services:
       PORT: 8001
       SECRET_EXPIRES: "1h"
       SECRET: "namehandsome130498"
-      DB_URI: "mongodb://db:27017/COMP1640"
+      DB_URI: "mongodb://root:rootPassword@db:27017/COMP1640?authSource=admin"
 volumes:
   db-local:
