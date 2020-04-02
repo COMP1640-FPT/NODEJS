@@ -11,7 +11,8 @@ steps:
   - ./.npm-cache
   - ./node_modules
   volumes:
-  - /tmp/cache:/cache
+  - name: cache
+    path: /tmp/cache
 
 - name: install
   image: node:alpine
@@ -92,9 +93,11 @@ steps:
   rebuild: true
   mount:
   - ./node_modules
+  - ./.npm-cache
   # Mount the cache volume, needs "Trusted"
   volumes:
-  - /tmp/cache:/cache
+  - name: cache
+    path: /tmp/cache
 
 volumes:
   - name: cache
