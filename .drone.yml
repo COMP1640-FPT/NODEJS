@@ -44,12 +44,7 @@ steps:
     password:
       from_secret: server_password
     script:
-      - docker pull tungduy/nodejs-etutor:latest  
-      - docker stop react-app 
-      - docker rm react-app
-      - docker rmi tungduy/nodejs-etutor:current  
-      - docker tag tungduy/nodejs-etutor:latest tungduy/nodejs-etutor:current  
-      - docker run -d --name react-app --network fbeta-networks -e PORT=3030 tungduy/nodejs-etutor:latest
+      - . ~/project/.script/deploy.sh tungduy/nodejs-etutor
   when:
     branch:
       - master
