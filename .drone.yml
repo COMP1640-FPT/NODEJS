@@ -10,8 +10,8 @@ steps:
   mount:
   - ./.npm-cache
   - ./node_modules
-volumes:
-    - /tmp/cache:/cache
+  volumes:
+  - /tmp/cache:/cache
 
 - name: install
   image: node:alpine
