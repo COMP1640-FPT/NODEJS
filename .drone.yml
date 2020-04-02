@@ -4,14 +4,23 @@ type: docker
 name: default
 
 steps:
-- name: build
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  restore: true
+  mount:
+  - ./.npm-cache
+  - ./node_modules
+volumes:
+    - /tmp/cache:/cache
+
+- name: install
   image: node:alpine
   volumes:
   - name: cache
     path: /tmp/cache
   commands:
   - npm config set cache-folder .npm-cache
-  - npm install
+  - npm install --pure-lockfile
 
 - name: Publish
   image: plugins/docker
@@ -34,8 +43,12 @@ steps:
     password:
       from_secret: server_password
     script:
-    #   - . ~/project/.script/deploy.sh
-        - echo "test ssh"
+      - docker pull tungduy/nodejs-etutor:latest  
+      - docker stop react-app 
+      - docker rm react-app
+      - docker rmi tungduy/nodejs-etutor:current  
+      - docker tag tungduy/nodejs-etutor:latest tungduy/nodejs-etutor:current  
+      - docker run -d --name react-app --network fbeta-networks -e PORT=3030 tungduy/nodejs-etutor:latest
   when:
     branch:
       - master
@@ -73,6 +86,15 @@ steps:
     status:
       - success
       - failure
+
+- name: rebuild-cache
+  image: drillster/drone-volume-cache
+  rebuild: true
+  mount:
+  - ./node_modules
+  # Mount the cache volume, needs "Trusted"
+  volumes:
+  - /tmp/cache:/cache
 
 volumes:
   - name: cache
