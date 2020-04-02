@@ -4,7 +4,7 @@ type: docker
 name: default
 
 steps:
-- name: restore-cache
+- name: Restore-cache
   image: drillster/drone-volume-cache
   restore: true
   mount:
@@ -14,7 +14,7 @@ steps:
   - name: cache
     path: /tmp/cache
 
-- name: install
+- name: Install package
   image: node:alpine
   volumes:
   - name: cache
@@ -53,7 +53,7 @@ steps:
     status:
       - success
 
-- name: slack_build
+- name: Slack send massage
   image: plugins/slack
   settings:
     webhook:
@@ -83,7 +83,7 @@ steps:
       - success
       - failure
 
-- name: rebuild-cache
+- name: Rebuild-cache
   image: drillster/drone-volume-cache
   rebuild: true
   mount:
