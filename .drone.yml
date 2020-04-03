@@ -89,7 +89,6 @@ steps:
   mount:
   - ./node_modules
   - ./.npm-cache
-  # Mount the cache volume, needs "Trusted"
   volumes:
   - name: cache
     path: /tmp/cache
