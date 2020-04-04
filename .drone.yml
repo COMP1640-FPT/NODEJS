@@ -4,36 +4,21 @@ type: docker
 name: default
 
 steps:
-- name: Restore-cache
-  image: drillster/drone-volume-cache
-  restore: true
-  mount:
-  - ./.npm-cache
-  - ./node_modules
-  volumes:
-  - name: cache
-    path: /tmp/cache
-
-- name: Install package
-  image: node:alpine
-  volumes:
-  - name: cache
-    path: /tmp/cache
-  commands:
-  - npm config set cache-folder .npm-cache
-  - npm install --pure-lockfile
-
-- name: Publish
+- name: Build and Publish
   image: plugins/docker
   settings:
-    auto_tag: true
     repo: tungduy/nodejs-etutor
     dockerfile: Dockerfile
+    daemon_off: true
+    purge: false
     username: 
       from_secret: docker_username
     password: 
       from_secret: docker_password
-    
+  volumes:
+  - name: dockerSock
+    path: /var/run/docker.sock
+
 - name: Transfer-compose
   image: appleboy/drone-scp
   settings:
@@ -49,7 +34,7 @@ steps:
   when:
     branch: master
 
-- name: Run Images
+- name: Deploy service
   image: appleboy/drone-ssh
   settings:
     host: drone.e-tutor.wtf
@@ -102,17 +87,7 @@ steps:
       - success
       - failure
 
-- name: Rebuild-cache
-  image: drillster/drone-volume-cache
-  rebuild: true
-  mount:
-  - ./node_modules
-  - ./.npm-cache
-  volumes:
-  - name: cache
-    path: /tmp/cache
-
 volumes:
-  - name: cache
+  - name: dockerSock
     host:
-      path: /var/lib/cache
+      path: /var/run/docker.sock
