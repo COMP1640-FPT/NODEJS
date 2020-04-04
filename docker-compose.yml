@@ -1,26 +1,15 @@
 version: '3'
 services:
-  db:
-    image: mongo
-    networks: 
-      - www-net
-  mongo-express:
-    image: mongo-express
-    depends_on:
-      - db
-    environment: 
-      ME_CONFIG_MONGODB_SERVER: db
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
-    networks: 
-      - www-net
   web:
-    build:
-      context: .
-    depends_on: 
-      - db
+    ports: 
+      - ${PORT}:${PORT}
+    environment:
+      PORT: ${PORT}
+      SECRET_EXPIRES: ${SECRET_EXPIRES}
+      SECRET: ${SECRET}
+      DB_URI: "mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin"
     networks: 
-      - www-net
+      - fbeta-networks
 networks: 
-  www-net:
-    driver: bridge
+  fbeta-networks:
+    external: true

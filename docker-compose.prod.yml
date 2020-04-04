@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    image: tungduy/nodejs-etutor
+    environment: 
+      NODE_ENV: production
+    networks: 
+      - fbeta-networks
+networks: 
+  fbeta-networks:
+    external: true
