@@ -26,7 +26,7 @@ app.use(cors());
 app.post("/messages", messageController.saveMessage);
 
 app.post(
-  "/api/users/upload-avatar",
+  "/users/upload-avatar",
   upload.single("avatar"),
   async (req, res, next) => {
     const extFile = req.file.originalname.split('.').pop()
