@@ -80,7 +80,7 @@ app.get("/api/ping", (req, res, next) => {
   res.status(200).jsonp({
     success: true,
     results: null,
-    message: `I'm COMP1640-NODEJS`
+    message: `I'm COMP1640-NODEJSS`
   });
 });
 
