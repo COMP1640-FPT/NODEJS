@@ -50,6 +50,32 @@ app.post(
   }
 );
 
+app.post(
+  "/requests/upload-file",
+  upload.single("file"),
+  async (req, res, next) => {
+     console.log(req.file)
+    const extFile = req.file.originalname.split('.').pop()
+    const filename = [makeid(20), extFile].join('.')
+
+    const file = await uploadFileToS3(s3, {
+      Bucket: 'codingame',
+      Key: `requests/files/${filename}`,
+      ACL: 'public-read',
+      ContentType: req.file.mimetype,
+      Body: req.file.buffer
+    });
+
+    res.status(200).json({
+      success: true,
+      results: {
+        url: file
+      },
+      message: "Upload file successfully!"
+    });
+  }
+);
+
 app.get("/api/ping", (req, res, next) => {
   res.status(200).jsonp({
     success: true,
