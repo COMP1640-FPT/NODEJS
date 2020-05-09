@@ -48,6 +48,7 @@ steps:
         - docker-compose down
         - docker rmi -f tungduy/nodejs-etutor
         - docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
     when:
       branch:
         - master
